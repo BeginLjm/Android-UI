@@ -1,1 +1,1 @@
-include ':app', ':arcseekbar'
+include ':app', ':arcseekbar', ':luloader'
