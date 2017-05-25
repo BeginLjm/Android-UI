@@ -1,0 +1,13 @@
+<resources>
+    <!--name为声明的"属性集合"名，可以随便取，但是最好是设置为跟我们的View一样的名称-->
+    <declare-styleable name="ArcSeekBar">
+        <!--声明我们的属性，名称为default_size,取值类型为尺寸类型（dp,px等）-->
+        <attr name="seek_size" format="dimension" />
+        <attr name="bar_size" format="dimension" />
+        <attr name="text_size" format="dimension" />
+        <attr name="arc_color" format="color" />
+        <attr name="circle_color" format="color" />
+        <attr name="text_color" format="color" />
+        <attr name="bar_color" format="color" />
+    </declare-styleable>
+</resources>
