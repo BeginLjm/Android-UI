@@ -51,22 +51,24 @@ public class LuLoader extends LinearLayout {
             addView(circle);
         }
 
-        valueAnimator = ValueAnimator.ofFloat(-1.5707963267948966f, 1.5707963267948966f);
+        valueAnimator = ValueAnimator.ofFloat(-3.14159265358979323846f, 3.14159265358979323846f);
         valueAnimator.setDuration(1000);
-        valueAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
         valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float alpha = (float) animation.getAnimatedValue();
+                float value = (float) animation.getAnimatedValue();
                 for (int i = 0; i < circleSize; i++) {
-                    alpha += alpha + i * (Math.PI / circleSize);
-                    alpha = (float) Math.sin(alpha);
+                    if (i != 0)
+                        value += (2*Math.PI / circleSize);
+                    Log.d("LuLoader", i + "：" + value);
+                    float alpha = (float) Math.sin(value);
                     alpha = (float) (alpha / 2 + 0.5);
                     if (alpha > 1)
                         continue;
                     if (alpha < 0)
-                        alpha = -alpha;
+                        continue;
                     circles[i].setAlpha(alpha);
                 }
             }
