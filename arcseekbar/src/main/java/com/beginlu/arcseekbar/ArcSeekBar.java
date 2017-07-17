@@ -25,6 +25,7 @@ public class ArcSeekBar extends View {
     private RectF rectF;
     private boolean isTouch = false;
 
+    /*默认的数值 */
     private int seekSize = 6;
     private int barSize = 15;
     private int textSize = 30;
@@ -32,6 +33,8 @@ public class ArcSeekBar extends View {
     private int circleColor = 0xff009688;
     private int textColor = 0xffFFFFFF;
     private int barColor = 0xff03A9F4;
+    private int mWidth = 800;
+    private int mHeight = 800;
     private OnArcSeekBarChangeListener onArcSeekBarChangeListener;
 
 
@@ -62,14 +65,12 @@ public class ArcSeekBar extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int heigthMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heigth = MeasureSpec.getSize(heightMeasureSpec);
-        if (widthMode == MeasureSpec.AT_MOST)
-            width = 800;
-        if (heigthMode == MeasureSpec.AT_MOST)
-            heigth = 800;
-        setMeasuredDimension(width, heigth);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        if (widthMode != MeasureSpec.AT_MOST)
+            mWidth = MeasureSpec.getSize(widthMeasureSpec);
+        if (heightMode != MeasureSpec.AT_MOST)
+            mHeight = MeasureSpec.getSize(heightMeasureSpec);
+        setMeasuredDimension(mWidth, mHeight);
     }
 
     @Override
@@ -145,7 +146,7 @@ public class ArcSeekBar extends View {
                 isTouch = false;
                 break;
         }
-        return true;
+        return isTouch;
     }
 
     public void setProgress(float progress) {
@@ -166,5 +167,41 @@ public class ArcSeekBar extends View {
         public void onStartTrackingTouch(ArcSeekBar arcSeekBar);
 
         public void onStopTrackingTouch(ArcSeekBar arcSeekBar);
+    }
+
+    public void setSeekSize(int seekSize) {
+        this.seekSize = seekSize;
+    }
+
+    public void setBarSize(int barSize) {
+        this.barSize = barSize;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public void setArcColor(int arcColor) {
+        this.arcColor = arcColor;
+    }
+
+    public void setCircleColor(int circleColor) {
+        this.circleColor = circleColor;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+    }
+
+    public void setBarColor(int barColor) {
+        this.barColor = barColor;
+    }
+
+    public void setWidth(int width) {
+        this.mWidth = width;
+    }
+
+    public void setHeight(int height) {
+        this.mHeight = height;
     }
 }
