@@ -60,6 +60,24 @@ public class ArcSeekBar extends View {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int heigthMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heigth = MeasureSpec.getSize(heightMeasureSpec);
+        if (widthMode == MeasureSpec.AT_MOST)
+            width = 800;
+        if (heigthMode == MeasureSpec.AT_MOST)
+            heigth = 800;
+        setMeasuredDimension(width, heigth);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         r = (getMeasuredWidth() / 2);

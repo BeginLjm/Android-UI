@@ -13,8 +13,8 @@
 
         <com.beginlu.arcseekbar.ArcSeekBar
             android:id="@+id/rounded_seek_bar"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             beginlu:arc_color="@color/colorAccent"
             beginlu:bar_color="@color/colorPrimaryDark"
             beginlu:bar_size="18dp"
