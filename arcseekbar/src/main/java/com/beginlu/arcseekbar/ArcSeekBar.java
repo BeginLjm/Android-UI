@@ -33,8 +33,8 @@ public class ArcSeekBar extends View {
     private int circleColor = 0xff009688;
     private int textColor = 0xffFFFFFF;
     private int barColor = 0xff03A9F4;
-    private int mWidth = 800;
-    private int mHeight = 800;
+    private int mWidth = 300;
+    private int mHeight = 300;
     private OnArcSeekBarChangeListener onArcSeekBarChangeListener;
 
 

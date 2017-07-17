@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.beginlu.arcseekbar.ArcSeekBar;
+import com.beginlu.qqlistitem.QQListItem;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +56,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-
+            holder.qqListItem.setOnClickListener(new QQListItem.OnClickListener() {
+                @Override
+                public void OnClick(int position) {
+                    Toast.makeText(MainActivity.this, "Button" + position, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         @Override
@@ -63,9 +70,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
+            QQListItem qqListItem;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
+                qqListItem = (QQListItem) itemView;
             }
         }
     }

@@ -42,6 +42,7 @@ public class QQListItem extends RelativeLayout {
     private boolean mButton2Click = false;
     private boolean mButton3Click = false;
     private boolean mOtherClick = false;
+    private boolean isMove = false;
 
     public QQListItem(Context context) {
         this(context, null);
@@ -120,6 +121,24 @@ public class QQListItem extends RelativeLayout {
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                getParent().requestDisallowInterceptTouchEvent(true);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (!isMove && Math.abs(mFirstEventX - ev.getX()) < Math.abs(ev.getY() - mFirstEventY)) {
+                    getParent().requestDisallowInterceptTouchEvent(false);
+                    if (mSize > (mButton1Width + mButton2Width + mButton3Width) / 2)
+                        moveToEnd(true);
+                    else
+                        moveToEnd(false);
+                }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -138,6 +157,7 @@ public class QQListItem extends RelativeLayout {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (Math.abs(mFirstEventX - event.getX()) > Math.abs(event.getY() - mFirstEventY)) {
+                    isMove = true;
                     if (event.getX() < mFirstEventX) {
                         mSize = mFirstEventX - event.getX();
                         if (mSize > mButton1Width + mButton2Width + mButton3Width)
@@ -155,6 +175,7 @@ public class QQListItem extends RelativeLayout {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                isMove = false;
                 if (mButton1Click) {
                     onClick(0);
                     mButton1Click = false;
@@ -207,5 +228,9 @@ public class QQListItem extends RelativeLayout {
 
     public interface OnClickListener {
         void OnClick(int position);
+    }
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 }
