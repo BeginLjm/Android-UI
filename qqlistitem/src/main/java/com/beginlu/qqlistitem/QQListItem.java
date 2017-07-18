@@ -40,10 +40,7 @@ public class QQListItem extends RelativeLayout {
 
     public QQListItem(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        if (getBackground() == null) {
-            this.setBackgroundColor(0x00000000);
-        }
-
+        setWillNotDraw(false);
         mButtons = new LinkedList<>();
     }
 
