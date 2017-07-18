@@ -14,6 +14,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.beginlu.arcseekbar.ArcSeekBar;
+import com.beginlu.luloader.LuLoader;
 import com.beginlu.qqlistitem.QQListItem;
 import com.beginlu.qqlistitem.QQListItemButton;
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArcSeekBar arcSeekBar;
     private LinkedList<QQListItemButton> mButtons;
+    private LuLoader mLuLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Main", "stop");
             }
         });
+
+        this.mLuLoader = (LuLoader) findViewById(R.id.lu_loader);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

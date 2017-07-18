@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -91,7 +92,7 @@ public class QQListItem extends RelativeLayout {
                 getParent().requestDisallowInterceptTouchEvent(true);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (!isMove) {
+                if (!isMove && Math.abs(mFirstEventX - ev.getX()) < Math.abs(ev.getY() - mFirstEventY)) {
                     getParent().requestDisallowInterceptTouchEvent(false);
                     if (mSize > (mWidth) / 2)
                         moveToEnd(true);

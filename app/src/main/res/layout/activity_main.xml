@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:beginlu="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,8 +30,11 @@
         android:layout_height="wrap_content">
 
         <com.beginlu.luloader.LuLoader
+            android:id="@+id/lu_loader"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            beginlu:color="@color/colorPrimaryDark"
+            beginlu:text="俊" />
     </RelativeLayout>
 
     <!--<com.beginlu.qqlistitem.QQListItem-->
