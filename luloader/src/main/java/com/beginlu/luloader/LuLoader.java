@@ -4,8 +4,19 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
+import android.graphics.Region;
+import android.graphics.Typeface;
+import android.os.AsyncTask;
+import android.speech.tts.Voice;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -13,6 +24,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,14 +32,15 @@ import android.widget.LinearLayout;
  * Created by beginlu on 2017/5/25.
  */
 
-public class LuLoader extends LinearLayout {
-    private final ValueAnimator valueAnimator;
-    //    private final AnimationSet animationSet1;
-//    private final AnimationSet animationSet2;
-    private int circleColor = Color.BLUE;
-    private int circleSize = 4;
-    private ImageView[] circles = new ImageView[circleSize];
-    private boolean isBack = false;
+public class LuLoader extends View {
+
+    private int mWidth;
+    private int mHeight;
+    private String mText = "陆";
+    private int mTextSize = 180;
+    private int mColor = Color.BLUE;
+    private float progress = 0.5f;
+    private float deviation = 1;
 
     public LuLoader(Context context) {
         this(context, null);
@@ -39,112 +52,128 @@ public class LuLoader extends LinearLayout {
 
     public LuLoader(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        for (int i = 0; i < circleSize; i++) {
-            ImageView circle = new ImageView(context);
-            LayoutParams layoutParams = new LayoutParams(30, 30);
-            layoutParams.setMargins(10, 10, 10, 10);
-            circle.setLayoutParams(layoutParams);
-            circle.setBackgroundColor(circleColor);
-            circles[i] = circle;
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LuLoader);
+
+        mTextSize = a.getDimensionPixelSize(R.styleable.LuLoader_text_size, mTextSize);
+        mColor = a.getColor(R.styleable.LuLoader_color, mColor);
+        String text = a.getString(R.styleable.LuLoader_text);
+        if (!"".equals(text))
+            mText = text;
+
+        a.recycle();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST) {
+            widthMeasureSpec = MeasureSpec.makeMeasureSpec(380, MeasureSpec.EXACTLY);
         }
-        for (ImageView circle : circles) {
-            addView(circle);
+        if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST) {
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(380, MeasureSpec.EXACTLY);
         }
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
+    }
 
-        valueAnimator = ValueAnimator.ofFloat(-3.14159265358979323846f, 3.14159265358979323846f);
-        valueAnimator.setDuration(1000);
-        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
-        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                for (int i = 0; i < circleSize; i++) {
-                    if (i != 0)
-                        value += (2*Math.PI / circleSize);
-                    Log.d("LuLoader", i + "：" + value);
-                    float alpha = (float) Math.sin(value);
-                    alpha = (float) (alpha / 2 + 0.5);
-                    if (alpha > 1)
-                        continue;
-                    if (alpha < 0)
-                        continue;
-                    circles[i].setAlpha(alpha);
-                }
-            }
-        });
-        valueAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+    }
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-            }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        mWidth = getWidth();
+        mHeight = getHeight();
+        Paint paint = new Paint();
+        paint.setColor(mColor);
+        paint.setTypeface(Typeface.DEFAULT_BOLD);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setTextSize(mTextSize);
+        paint.setDither(true);
+        int textX = (int) (mWidth / 2 - paint.measureText(mText) / 2);
+        int textY = (int) (mHeight / 2 - (paint.ascent() + paint.descent()) / 2);
+        canvas.drawText(mText, textX, textY, paint);
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                isBack = !isBack;
-            }
-        });
+        Path circlePath = new Path();
+        circlePath.addCircle(mWidth / 2, mHeight / 2, mHeight / 2, Path.Direction.CW);
+        circlePath.close();
+        canvas.clipPath(circlePath);
 
-//        AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
-//        alphaAnimation.setDuration(1000);
-//        animationSet1 = new AnimationSet(true);
-//        animationSet1.addAnimation(alphaAnimation);
-//        animationSet1.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                for (ImageView circle : circles)
-//                    circle.setAnimation(animationSet2);
-//                animationSet2.startNow();
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
-//
-//        alphaAnimation = new AlphaAnimation(0, 1);
-//        alphaAnimation.setDuration(1000);
-//        animationSet2 = new AnimationSet(true);
-//        animationSet2.addAnimation(alphaAnimation);
-//        animationSet2.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                for (ImageView circle : circles)
-//                    circle.setAnimation(animationSet1);
-//                animationSet1.startNow();
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
+        Path path = getWavePath();
+
+        canvas.translate(mWidth * deviation, 0);
+        canvas.drawPath(path, paint);
+
+        canvas.clipPath(path);
+        paint.setColor(Color.WHITE);
+        canvas.drawText(mText, textX - mWidth * deviation, textY, paint);
+    }
+
+    private Path getWavePath() {
+        Path path = new Path();
+        path.moveTo(0, mHeight * (1 - progress));
+        path.quadTo(mWidth / 4 * 1, mHeight * (1 - progress) - mHeight / 6, mWidth / 2 * 1, mHeight * (1 - progress));
+        path.quadTo(mWidth / 4 * 3, mHeight * (1 - progress) + mHeight / 6, mWidth / 2 * 2, mHeight * (1 - progress));
+        path.quadTo(mWidth / 4 * 5, mHeight * (1 - progress) - mHeight / 6, mWidth / 2 * 3, mHeight * (1 - progress));
+        path.quadTo(mWidth / 4 * 7, mHeight * (1 - progress) + mHeight / 6, mWidth / 2 * 4, mHeight * (1 - progress));
+        path.lineTo(mWidth * 2, mHeight);
+        path.lineTo(0, mHeight);
+        path.close();
+        return path;
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
-//        for (ImageView circle : circles)
-//            circle.setAnimation(animationSet1);
-//        animationSet1.startNow();
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(-1, 0);
+        valueAnimator.setDuration(1500);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                deviation = (float) animation.getAnimatedValue();
+                postInvalidate();
+            }
+        });
         valueAnimator.start();
+    }
+
+    public String getText() {
+        return mText;
+    }
+
+    public void setText(String mText) {
+        this.mText = mText;
+    }
+
+    public int getTextSize() {
+        return mTextSize;
+    }
+
+    public void setTextSize(int mTextSize) {
+        this.mTextSize = mTextSize;
+    }
+
+    public int getColor() {
+        return mColor;
+    }
+
+    public void setColor(int mColor) {
+        this.mColor = mColor;
+    }
+
+    public float getProgress() {
+        return progress;
+    }
+
+    public void setProgress(float progress) {
+        if (progress > 1 || progress < 0)
+            return;
+        this.progress = progress;
+        postInvalidate();
     }
 }

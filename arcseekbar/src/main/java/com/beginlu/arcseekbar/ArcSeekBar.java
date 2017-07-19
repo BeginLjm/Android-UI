@@ -33,8 +33,8 @@ public class ArcSeekBar extends View {
     private int circleColor = 0xff009688;
     private int textColor = 0xffFFFFFF;
     private int barColor = 0xff03A9F4;
-    private int mWidth = 300;
-    private int mHeight = 300;
+    private int mWidth = 500;
+    private int mHeight = 500;
     private OnArcSeekBarChangeListener onArcSeekBarChangeListener;
 
 
@@ -51,13 +51,13 @@ public class ArcSeekBar extends View {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ArcSeekBar);
 
-        seekSize = a.getDimensionPixelSize(R.styleable.ArcSeekBar_seek_size, 6);
-        barSize = a.getDimensionPixelSize(R.styleable.ArcSeekBar_bar_size, 15);
-        textSize = a.getDimensionPixelSize(R.styleable.ArcSeekBar_text_size, 30);
-        arcColor = a.getColor(R.styleable.ArcSeekBar_arc_color, 0xff757575);
-        circleColor = a.getColor(R.styleable.ArcSeekBar_circle_color, 0xff009688);
-        textColor = a.getColor(R.styleable.ArcSeekBar_text_color, 0xffFFFFFF);
-        barColor = a.getColor(R.styleable.ArcSeekBar_bar_color, 0xff03A9F4);
+        seekSize = a.getDimensionPixelSize(R.styleable.ArcSeekBar_seek_size, seekSize);
+        barSize = a.getDimensionPixelSize(R.styleable.ArcSeekBar_bar_size, barSize);
+        textSize = a.getDimensionPixelSize(R.styleable.ArcSeekBar_text_size, textSize);
+        arcColor = a.getColor(R.styleable.ArcSeekBar_arc_color, arcColor);
+        circleColor = a.getColor(R.styleable.ArcSeekBar_circle_color, circleColor);
+        textColor = a.getColor(R.styleable.ArcSeekBar_text_color, textColor);
+        barColor = a.getColor(R.styleable.ArcSeekBar_bar_color, barColor);
 
         a.recycle();
     }

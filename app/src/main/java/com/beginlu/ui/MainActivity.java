@@ -14,11 +14,17 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.beginlu.arcseekbar.ArcSeekBar;
+import com.beginlu.luloader.LuLoader;
 import com.beginlu.qqlistitem.QQListItem;
+import com.beginlu.qqlistitem.QQListItemButton;
+
+import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
 
     private ArcSeekBar arcSeekBar;
+    private LinkedList<QQListItemButton> mButtons;
+    private LuLoader mLuLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +48,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        this.mLuLoader = (LuLoader) findViewById(R.id.lu_loader);
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new MyAdapter());
+
+        mButtons = new LinkedList<>();
+        QQListItemButton button1 = new QQListItemButton(0xFFC8C7CE, 0xFFFFFFFF, 100, "置顶", 40, false);
+        mButtons.add(button1);
+
+        QQListItemButton button2 = new QQListItemButton(0xFFFF9C37, 0xFFFFFFFF, 200, "标为未读", 30, false);
+        mButtons.add(button2);
+
+        QQListItemButton button3 = new QQListItemButton(0xFFFF3739, 0xFFFFFFFF, 100, "删除", 40, false);
+        mButtons.add(button3);
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -56,10 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
+            holder.qqListItem.setButtons(mButtons);
             holder.qqListItem.setOnClickListener(new QQListItem.OnClickListener() {
                 @Override
-                public void OnClick(int position) {
-                    Toast.makeText(MainActivity.this, "Button" + position, Toast.LENGTH_SHORT).show();
+                public void OnClick(int position, QQListItemButton button) {
+                    Toast.makeText(MainActivity.this, "Button" + position + button.getText(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
