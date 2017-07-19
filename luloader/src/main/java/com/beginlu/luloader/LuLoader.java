@@ -174,5 +174,6 @@ public class LuLoader extends View {
         if (progress > 1 || progress < 0)
             return;
         this.progress = progress;
+        postInvalidate();
     }
 }
