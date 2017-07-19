@@ -31,4 +31,5 @@ dependencies {
     compile project(path: ':arcseekbar')
     compile project(path: ':luloader')
     compile project(path: ':qqlistitem')
+    compile project(path: ':lumusicplay')
 }

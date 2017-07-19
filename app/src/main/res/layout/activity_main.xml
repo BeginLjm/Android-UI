@@ -10,8 +10,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp">
+        android:layout_height="wrap_content">
 
         <com.beginlu.arcseekbar.ArcSeekBar
             android:id="@+id/rounded_seek_bar"
@@ -25,7 +24,7 @@
             beginlu:text_size="18sp" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -34,8 +33,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             beginlu:color="@color/colorPrimaryDark"
-            beginlu:text="俊" />
-    </RelativeLayout>
+            beginlu:text="陆" />
+
+        <com.beginlu.lumusicplay.LuMusicPlay
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <!--<com.beginlu.qqlistitem.QQListItem-->
     <!--android:layout_width="match_parent"-->
