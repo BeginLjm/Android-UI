@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:beginlu="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.beginlu.ui.FragmentPage3">
+
+    <!-- TODO: Update blank fragment layout -->
+    <com.beginlu.luloader.LuLoader
+        android:id="@+id/lu_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        beginlu:color="@color/colorPrimary"
+        beginlu:text="陆" />
+</FrameLayout>

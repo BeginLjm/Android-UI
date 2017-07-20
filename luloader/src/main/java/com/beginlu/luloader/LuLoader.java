@@ -39,8 +39,8 @@ public class LuLoader extends View {
     private String mText = "陆";
     private int mTextSize = 180;
     private int mColor = Color.BLUE;
-    private float progress = 0.5f;
-    private float deviation = 1;
+    private float mProgress = 0.5f;
+    private float mDeviation = 1;
 
     public LuLoader(Context context) {
         this(context, null);
@@ -58,10 +58,24 @@ public class LuLoader extends View {
         mTextSize = a.getDimensionPixelSize(R.styleable.LuLoader_text_size, mTextSize);
         mColor = a.getColor(R.styleable.LuLoader_color, mColor);
         String text = a.getString(R.styleable.LuLoader_text);
-        if (!"".equals(text))
+        if (text != null)
             mText = text;
 
         a.recycle();
+
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(-1, 0);
+        valueAnimator.setDuration(1500);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mDeviation = (float) animation.getAnimatedValue();
+                postInvalidate();
+            }
+        });
+        valueAnimator.start();
     }
 
     @Override
@@ -103,21 +117,21 @@ public class LuLoader extends View {
 
         Path path = getWavePath();
 
-        canvas.translate(mWidth * deviation, 0);
+        canvas.translate(mWidth * mDeviation, 0);
         canvas.drawPath(path, paint);
 
         canvas.clipPath(path);
         paint.setColor(Color.WHITE);
-        canvas.drawText(mText, textX - mWidth * deviation, textY, paint);
+        canvas.drawText(mText, textX - mWidth * mDeviation, textY, paint);
     }
 
     private Path getWavePath() {
         Path path = new Path();
-        path.moveTo(0, mHeight * (1 - progress));
-        path.quadTo(mWidth / 4 * 1, mHeight * (1 - progress) - mHeight / 6, mWidth / 2 * 1, mHeight * (1 - progress));
-        path.quadTo(mWidth / 4 * 3, mHeight * (1 - progress) + mHeight / 6, mWidth / 2 * 2, mHeight * (1 - progress));
-        path.quadTo(mWidth / 4 * 5, mHeight * (1 - progress) - mHeight / 6, mWidth / 2 * 3, mHeight * (1 - progress));
-        path.quadTo(mWidth / 4 * 7, mHeight * (1 - progress) + mHeight / 6, mWidth / 2 * 4, mHeight * (1 - progress));
+        path.moveTo(0, mHeight * (1 - mProgress));
+        path.quadTo(mWidth / 4 * 1, mHeight * (1 - mProgress) - mHeight / 6, mWidth / 2 * 1, mHeight * (1 - mProgress));
+        path.quadTo(mWidth / 4 * 3, mHeight * (1 - mProgress) + mHeight / 6, mWidth / 2 * 2, mHeight * (1 - mProgress));
+        path.quadTo(mWidth / 4 * 5, mHeight * (1 - mProgress) - mHeight / 6, mWidth / 2 * 3, mHeight * (1 - mProgress));
+        path.quadTo(mWidth / 4 * 7, mHeight * (1 - mProgress) + mHeight / 6, mWidth / 2 * 4, mHeight * (1 - mProgress));
         path.lineTo(mWidth * 2, mHeight);
         path.lineTo(0, mHeight);
         path.close();
@@ -127,19 +141,6 @@ public class LuLoader extends View {
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(-1, 0);
-        valueAnimator.setDuration(1500);
-        valueAnimator.setInterpolator(new LinearInterpolator());
-        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                deviation = (float) animation.getAnimatedValue();
-                postInvalidate();
-            }
-        });
-        valueAnimator.start();
     }
 
     public String getText() {
@@ -167,13 +168,13 @@ public class LuLoader extends View {
     }
 
     public float getProgress() {
-        return progress;
+        return mProgress;
     }
 
     public void setProgress(float progress) {
         if (progress > 1 || progress < 0)
             return;
-        this.progress = progress;
+        this.mProgress = progress;
         postInvalidate();
     }
 }

@@ -1,6 +1,11 @@
 package com.beginlu.ui;
 
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +22,7 @@ import android.widget.Toast;
 import com.beginlu.arcseekbar.ArcSeekBar;
 import com.beginlu.luloader.LuLoader;
 import com.beginlu.lumusicplay.LuMusicPlay;
+import com.beginlu.lutabtitle.LuTabTitle;
 import com.beginlu.qqlistitem.QQListItem;
 import com.beginlu.qqlistitem.QQListItemButton;
 
@@ -24,89 +30,48 @@ import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArcSeekBar arcSeekBar;
-    private LinkedList<QQListItemButton> mButtons;
-    private LuLoader mLuLoader;
+    private LuTabTitle mLuTabTitle;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.arcSeekBar = (ArcSeekBar) findViewById(R.id.rounded_seek_bar);
-        arcSeekBar.setOnArcSeekBarChangeListener(new ArcSeekBar.OnArcSeekBarChangeListener() {
+
+        mLuTabTitle = (LuTabTitle) findViewById(R.id.lu_tab_title);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        mLuTabTitle.setupWithViewPager(mViewPager);
+        mLuTabTitle.setOnAddClickListener(new LuTabTitle.OnAddClickListener() {
             @Override
-            public void onProgressChanged(ArcSeekBar arcSeekBar, float progress, boolean fromUser) {
-                Log.d("Main", progress + "..." + fromUser);
-            }
-
-            @Override
-            public void onStartTrackingTouch(ArcSeekBar arcSeekBar) {
-                Log.d("Main", "start");
-            }
-
-            @Override
-            public void onStopTrackingTouch(ArcSeekBar arcSeekBar) {
-                Log.d("Main", "stop");
-            }
-        });
-
-        this.mLuLoader = (LuLoader) findViewById(R.id.lu_loader);
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyAdapter());
-
-        mButtons = new LinkedList<>();
-        QQListItemButton button1 = new QQListItemButton(0xFFC8C7CE, 0xFFFFFFFF, 100, "置顶", 40, false);
-        mButtons.add(button1);
-
-        QQListItemButton button2 = new QQListItemButton(0xFFFF9C37, 0xFFFFFFFF, 200, "标为未读", 30, false);
-        mButtons.add(button2);
-
-        QQListItemButton button3 = new QQListItemButton(0xFFFF3739, 0xFFFFFFFF, 100, "删除", 40, false);
-        mButtons.add(button3);
-
-        final LuMusicPlay luMusicPlay = (LuMusicPlay) findViewById(R.id.lu_music_play);
-        luMusicPlay.start();
-
-        luMusicPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                luMusicPlay.stop();
+            public void onAddClick() {
+                Toast.makeText(MainActivity.this, "ADD", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+    class MyPagerAdapter extends FragmentPagerAdapter {
 
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new MyViewHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.listitem, parent, false));
+        String[] titles = {"Page1", "Page2", "Page3", "Page4"};
+        Fragment[] fragments = {new FragmentPage1(), new FragmentPage2(), new FragmentPage3(), new FragmentPage4()};
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.qqListItem.setButtons(mButtons);
-            holder.qqListItem.setOnClickListener(new QQListItem.OnClickListener() {
-                @Override
-                public void OnClick(int position, QQListItemButton button) {
-                    Toast.makeText(MainActivity.this, "Button" + position + button.getText(), Toast.LENGTH_SHORT).show();
-                }
-            });
+        public int getCount() {
+            return titles.length;
         }
 
         @Override
-        public int getItemCount() {
-            return 5;
+        public Fragment getItem(int position) {
+            return fragments[position];
         }
 
-        class MyViewHolder extends RecyclerView.ViewHolder {
-            QQListItem qqListItem;
-
-            public MyViewHolder(View itemView) {
-                super(itemView);
-                qqListItem = (QQListItem) itemView;
-            }
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles[position];
         }
     }
 

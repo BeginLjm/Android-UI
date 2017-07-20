@@ -29,3 +29,5 @@
         <attr name="background_color" format="color" />
         <attr name="color" format="color" />
         ```
+
+5. LuTabTitle 是一个对TabLayout的自定义。具体看演示吧。hhh
