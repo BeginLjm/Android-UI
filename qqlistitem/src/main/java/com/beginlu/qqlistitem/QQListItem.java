@@ -89,7 +89,7 @@ public class QQListItem extends RelativeLayout {
                 getParent().requestDisallowInterceptTouchEvent(true);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (!isMove && Math.abs(mFirstEventX - ev.getX()) < Math.abs(ev.getY() - mFirstEventY)) {
+                if (!isMove) {
                     getParent().requestDisallowInterceptTouchEvent(false);
                     if (mSize > (mWidth) / 2)
                         moveToEnd(true);
@@ -104,6 +104,7 @@ public class QQListItem extends RelativeLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                isMove = true;
                 mFirstEventX = event.getX();
                 mFirstEventY = event.getY();
                 if (mSize > 0) {
@@ -118,21 +119,26 @@ public class QQListItem extends RelativeLayout {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (Math.abs(mFirstEventX - event.getX()) > Math.abs(event.getY() - mFirstEventY)) {
-                    isMove = true;
-                    if (event.getX() < mFirstEventX) {
+                    if (event.getX() < mFirstEventX && mSize != mWidth) {
+                        isMove = true;
                         mSize = mFirstEventX - event.getX();
                         if (mSize > mWidth)
                             mSize = mWidth;
-                    } else {
+                    } else if (event.getX() > mFirstEventX && mSize != 0) {
+                        isMove = true;
                         mSize = mWidth - (event.getX() - mFirstEventX);
                         if (mSize < 0)
                             mSize = 0;
+                    } else {
+                        isMove = false;
                     }
                     for (QQListItemButton mButton : mButtons) {
                         mButton.isClick = false;
                     }
                     mOtherClick = false;
                     postInvalidate();
+                } else {
+
                 }
                 break;
             case MotionEvent.ACTION_UP:

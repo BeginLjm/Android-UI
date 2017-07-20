@@ -27,7 +27,7 @@ public class ArcSeekBar extends View {
 
     /*默认的数值 */
     private int seekSize = 6;
-    private int barSize = 15;
+    private int barSize = 30;
     private int textSize = 30;
     private int arcColor = 0xff757575;
     private int circleColor = 0xff009688;
@@ -108,6 +108,19 @@ public class ArcSeekBar extends View {
         paint.setColor(barColor);
         canvas.drawCircle(touchX, touchY, barSize, paint);
         this.rectF = new RectF(touchX - barSize, touchY - barSize, touchX + barSize, touchY + barSize);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                getParent().requestDisallowInterceptTouchEvent(false);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (!isTouch)
+                    getParent().requestDisallowInterceptTouchEvent(true);
+        }
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

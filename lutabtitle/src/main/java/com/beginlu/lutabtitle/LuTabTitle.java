@@ -189,8 +189,8 @@ public class LuTabTitle extends View implements ViewPager.OnPageChangeListener {
     private void move() {
         if (mRedRectF.left + mTranslateSize < 0) {
             mTranslateSize = -mRedRectF.left;
-        } else if (mRedRectF.right + mTranslateSize - mWidth > 0) {
-            mTranslateSize = -(mRedRectF.right - mWidth);
+        } else if (mRedRectF.right + mTranslateSize - (mWidth - mHeight) > 0) {
+            mTranslateSize = -(mRedRectF.right - (mWidth - mHeight));
         }
         if (mTranslateSize > 0)
             mTranslateSize = 0;
