@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -21,13 +22,14 @@ public class LuMusicPlay extends View {
     private int mColor = Color.BLUE;
     private int mBackgroundColor = Color.WHITE;
     private int mPaddingItem = 1;
-    private int mPadding = 25;
+    private int mPadding = 40;
     private int d = 0;
     private int mWidth;
     private int mHeight;
     private int mRadius;
     private int mPaddingTop;
     private int mPaddingLeft;
+    private ValueAnimator mValueAnimator;
 
     public LuMusicPlay(Context context) {
         this(context, null);
@@ -55,14 +57,26 @@ public class LuMusicPlay extends View {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setDither(true);
 
+        mValueAnimator = ValueAnimator.ofInt(0, 17);
+        mValueAnimator.setDuration(2000);
+        mValueAnimator.setRepeatMode(ValueAnimator.RESTART);
+        mValueAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        mValueAnimator.setInterpolator(new LinearInterpolator());
+        mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                d = (int) valueAnimator.getAnimatedValue();
+                postInvalidate();
+            }
+        });
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST)
-            widthMeasureSpec = MeasureSpec.makeMeasureSpec(100, MeasureSpec.EXACTLY);
+            widthMeasureSpec = MeasureSpec.makeMeasureSpec(200, MeasureSpec.EXACTLY);
         if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST)
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(100, MeasureSpec.EXACTLY);
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(200, MeasureSpec.EXACTLY);
         setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
     }
 
@@ -101,21 +115,21 @@ public class LuMusicPlay extends View {
         }
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        super.onWindowFocusChanged(hasWindowFocus);
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 17);
-        valueAnimator.setDuration(2000);
-        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
-        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        valueAnimator.setInterpolator(new LinearInterpolator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    public void start() {
+        post(new Runnable() {
             @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                d = (int) valueAnimator.getAnimatedValue();
-                postInvalidate();
+            public void run() {
+                mValueAnimator.start();
             }
         });
-        valueAnimator.start();
+    }
+
+    public void stop() {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                mValueAnimator.cancel();
+            }
+        });
     }
 }

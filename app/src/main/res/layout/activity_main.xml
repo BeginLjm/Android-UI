@@ -36,6 +36,7 @@
             beginlu:text="陆" />
 
         <com.beginlu.lumusicplay.LuMusicPlay
+            android:id="@+id/lu_music_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

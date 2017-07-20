@@ -1,5 +1,6 @@
 package com.beginlu.ui;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.beginlu.arcseekbar.ArcSeekBar;
 import com.beginlu.luloader.LuLoader;
+import com.beginlu.lumusicplay.LuMusicPlay;
 import com.beginlu.qqlistitem.QQListItem;
 import com.beginlu.qqlistitem.QQListItemButton;
 
@@ -63,6 +65,16 @@ public class MainActivity extends AppCompatActivity {
 
         QQListItemButton button3 = new QQListItemButton(0xFFFF3739, 0xFFFFFFFF, 100, "删除", 40, false);
         mButtons.add(button3);
+
+        final LuMusicPlay luMusicPlay = (LuMusicPlay) findViewById(R.id.lu_music_play);
+        luMusicPlay.start();
+
+        luMusicPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                luMusicPlay.stop();
+            }
+        });
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
