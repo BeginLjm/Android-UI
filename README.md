@@ -31,3 +31,5 @@
         ```
 
 5. LuTabTitle 是一个对TabLayout的自定义。具体看演示吧。hhh
+
+6. LuCardView 是一直支持展开操作的View。详细可以看我LuCardView这个项目，这是从那移过来的

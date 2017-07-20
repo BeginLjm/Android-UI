@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     class MyPagerAdapter extends FragmentPagerAdapter {
 
-        String[] titles = {"Page1", "Page2", "Page3", "Page4"};
-        Fragment[] fragments = {new FragmentPage1(), new FragmentPage2(), new FragmentPage3(), new FragmentPage4()};
+        String[] titles = {"Page1", "Page2", "Page3", "Page4", "Page5"};
+        Fragment[] fragments = {new FragmentPage1(), new FragmentPage2(), new FragmentPage3(), new FragmentPage4(), new FragmentPage5()};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
