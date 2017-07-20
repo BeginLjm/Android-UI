@@ -20,3 +20,12 @@
         ```
 3. QQListItem 看名字就知道是个仿QQ消息列表的Item，可以侧滑出操作按钮。在做这个控件的时候遇到一个bug，就是在第43行我设置了一个背景色，如果不设置背景色就无法划出操作按钮，但是mSize已经变大了。
     1. 支持自定义按钮数量和按钮文字内容，文字样式，背景颜色。具体看QQListItemButton类
+    
+4. LuMusicPlay 就是一个模仿虾米音乐播放时的一个动画
+    1. 支持自定义属性
+        ```xml
+        <attr name="padding_item" format="dimension" />
+        <attr name="padding" format="dimension" />
+        <attr name="background_color" format="color" />
+        <attr name="color" format="color" />
+        ```

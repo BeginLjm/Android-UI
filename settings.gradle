@@ -1,1 +1,1 @@
-include ':app', ':arcseekbar', ':luloader', ':qqlistitem', ':lutabtitle'
+include ':app', ':arcseekbar', ':luloader', ':qqlistitem', ':lutabtitle', ':lumusicplay'
