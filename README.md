@@ -1,6 +1,8 @@
 就是一个...想做个自己无聊写的自定义View的合集...
 
 1. ArcSeekBar 就是一个圆环形的滑块.
+
+    ![ArcSeekBar](./img/ArcSeekBar.gif)
     1. 支持自定义属性。 
         ```xml
         <attr name="seek_size" format="dimension" />
@@ -12,16 +14,22 @@
         <attr name="bar_color" format="color" />
         ```
 2. LuLoader 一个模仿百度贴吧的加载动画，自己支持波浪高度调整（也就是可以当个进度条）
+
+    ![LuLoader](./img/LuLoader.gif)
     1. 支持自定义属性
         ```xml
         <attr name="text_size" format="dimension" />
         <attr name="text" format="string" />
         <attr name="color" format="color" />
         ```
-3. QQListItem 看名字就知道是个仿QQ消息列表的Item，可以侧滑出操作按钮。在做这个控件的时候遇到一个bug，就是在第43行我设置了一个背景色，如果不设置背景色就无法划出操作按钮，但是mSize已经变大了。
+3. QQListItem 看名字就知道是个仿QQ消息列表的Item，可以侧滑出操作按钮。
+
+    ![QQListItem](./img/QQListItem.gif)
     1. 支持自定义按钮数量和按钮文字内容，文字样式，背景颜色。具体看QQListItemButton类
     
 4. LuMusicPlay 就是一个模仿虾米音乐播放时的一个动画
+
+    ![LuMusic](./img/LuMusic.gif)
     1. 支持自定义属性
         ```xml
         <attr name="padding_item" format="dimension" />
@@ -32,4 +40,4 @@
 
 5. LuTabTitle 是一个对TabLayout的自定义。具体看演示吧。hhh
 
-6. LuCardView 是一直支持展开操作的View。详细可以看我LuCardView这个项目，这是从那移过来的
+    ![LuTabTitle](./img/LuTabTitle.gif)
