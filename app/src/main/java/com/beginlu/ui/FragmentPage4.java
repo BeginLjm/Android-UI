@@ -27,8 +27,8 @@ public class FragmentPage4 extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_page4, container, false);
 
-        mLuMusicPlay = (LuMusicPlay) mView.findViewById(R.id.lu_music_play);
-        mLuMusicPlay.start();
+//        mLuMusicPlay = (LuMusicPlay) mView.findViewById(R.id.lu_music_play);
+//        mLuMusicPlay.start();
 
         return mView;
     }

@@ -6,13 +6,9 @@
     tools:context="com.beginlu.ui.FragmentPage4">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.beginlu.lumusicplay.LuMusicPlay
-        android:id="@+id/lu_music_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <com.beginlu.lumusicplay.LuMusic
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <com.beginlu.lumusicplay.LuMusicNext
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp" />
+    </com.beginlu.lumusicplay.LuMusic>
 </FrameLayout>

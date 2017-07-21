@@ -1,9 +1,7 @@
 package com.beginlu.lumusicplay;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,7 +14,7 @@ import android.view.View;
  * Created by BeginLu on 2017/7/20.
  */
 
-public class LuMusicNext extends View {
+public class LuMusicPrevious extends View {
     private int mPadding = 40;
     private float mOffSet = 0f;
     private Paint mPaint;
@@ -24,15 +22,15 @@ public class LuMusicNext extends View {
     private float mPaddingLeft;
     private float mPaddingTop;
 
-    public LuMusicNext(Context context) {
+    public LuMusicPrevious(Context context) {
         this(context, null);
     }
 
-    public LuMusicNext(Context context, @Nullable AttributeSet attrs) {
+    public LuMusicPrevious(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public LuMusicNext(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public LuMusicPrevious(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
 //        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LuMusicNext);
@@ -91,7 +89,7 @@ public class LuMusicNext extends View {
         Path path = new Path();
         float x = getWidth() > getHeight() ? getHeight() / 2 : getWidth() / 2;
         if (offSet)
-            path.addCircle(-x + 2 * x * mOffSet, x, x, Path.Direction.CW);
+            path.addCircle(3 * x - 2 * x * mOffSet, x, x, Path.Direction.CW);
         else
             path.addCircle(x, x, x, Path.Direction.CW);
         return path;
@@ -99,15 +97,15 @@ public class LuMusicNext extends View {
 
     private Path getNextPath() {
         Path path = new Path();
-        path.moveTo(mPaddingLeft, mPaddingTop);
-        path.lineTo(mPaddingLeft, mLength + mPaddingTop);
-        path.lineTo((float) (Math.sqrt(3) * mLength / 2) + mPaddingLeft, mLength / 2 + mPaddingTop);
-        path.lineTo(mPaddingLeft, mPaddingTop);
-        path.moveTo((float) (Math.sqrt(3) * mLength / 2) + mPaddingLeft, mPaddingTop);
-        path.lineTo((float) (Math.sqrt(3) * mLength / 2) + mPaddingLeft, mLength + mPaddingTop);
-        path.lineTo(mLength + mPaddingLeft, mLength + mPaddingTop);
-        path.lineTo(mLength + mPaddingLeft, mPaddingTop);
-        path.lineTo((float) (Math.sqrt(3) * mLength / 2) + mPaddingLeft, mPaddingTop);
+        path.moveTo(getWidth() - mPaddingLeft, mPaddingTop);
+        path.lineTo(getWidth() - mPaddingLeft, mLength + mPaddingTop);
+        path.lineTo(getWidth() - ((float) (Math.sqrt(3) * mLength / 2) + mPaddingLeft), mLength / 2 + mPaddingTop);
+        path.lineTo(getWidth() - mPaddingLeft, mPaddingTop);
+        path.moveTo(getWidth() - ((float) (Math.sqrt(3) * mLength / 2) + mPaddingLeft), mPaddingTop);
+        path.lineTo(getWidth() - ((float) (Math.sqrt(3) * mLength / 2) + mPaddingLeft), mLength + mPaddingTop);
+        path.lineTo(getWidth() - (mLength + mPaddingLeft), mLength + mPaddingTop);
+        path.lineTo(getWidth() - (mLength + mPaddingLeft), mPaddingTop);
+        path.lineTo(getWidth() - ((float) (Math.sqrt(3) * mLength / 2) + mPaddingLeft), mPaddingTop);
         return path;
     }
 
@@ -137,7 +135,7 @@ public class LuMusicNext extends View {
                 mOffSet = (float) animation.getAnimatedValue();
                 postInvalidate();
                 if (mOffSet == 0 || mOffSet == 1)
-                    LuMusicNext.this.setVisibility(GONE);
+                    LuMusicPrevious.this.setVisibility(GONE);
             }
         });
         valueAnimator.start();

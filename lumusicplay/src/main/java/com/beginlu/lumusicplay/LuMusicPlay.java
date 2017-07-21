@@ -115,6 +115,51 @@ public class LuMusicPlay extends View {
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        getParent().requestDisallowInterceptTouchEvent(true);
+        return super.dispatchTouchEvent(event);
+    }
+
+    float mFirstX;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mFirstX = event.getX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (event.getX() > mFirstX) {
+                    if (mOnPlayTouchEvent != null)
+                        mOnPlayTouchEvent.next((event.getX() - mFirstX) / getWidth());
+                } else if (event.getX() < mFirstX) {
+                    if (mOnPlayTouchEvent != null)
+                        mOnPlayTouchEvent.previous((mFirstX - event.getX()) / getWidth());
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (mOnPlayTouchEvent != null)
+                    mOnPlayTouchEvent.stop();
+                break;
+        }
+        return true;
+    }
+
+    private OnPlayTouchEvent mOnPlayTouchEvent;
+
+    public void setOnPlayTouchEvent(OnPlayTouchEvent onPlayTouchEvent) {
+        this.mOnPlayTouchEvent = onPlayTouchEvent;
+    }
+
+    interface OnPlayTouchEvent {
+        void next(float offset);
+
+        void previous(float offset);
+
+        void stop();
+    }
+
     public void start() {
         post(new Runnable() {
             @Override
