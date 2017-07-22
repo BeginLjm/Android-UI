@@ -84,30 +84,42 @@ public class QQListItem extends RelativeLayout {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                mFirstEventX = event.getX();
+                mFirstEventY = event.getY();
                 getParent().requestDisallowInterceptTouchEvent(true);
+                if (mSize > 0)
+                    return true;
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (!isMove) {
-                    getParent().requestDisallowInterceptTouchEvent(false);
+                if (Math.abs(mFirstEventX - event.getX()) > Math.abs(event.getY() - mFirstEventY)) {
+                    if (event.getX() < mFirstEventX && mSize != mWidth) {
+                        isMove = true;
+                    } else if (event.getX() > mFirstEventX && mSize != 0) {
+                        isMove = true;
+                    } else {
+                        isMove = false;
+                    }
+                }
+                getParent().requestDisallowInterceptTouchEvent(isMove);
+                if (!isMove)
                     if (mSize > (mWidth) / 2)
                         moveToEnd(true);
                     else
                         moveToEnd(false);
-                }
+                return isMove;
+            case MotionEvent.ACTION_UP:
+                break;
         }
-        return super.dispatchTouchEvent(ev);
+        return super.onInterceptTouchEvent(event);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                isMove = true;
-                mFirstEventX = event.getX();
-                mFirstEventY = event.getY();
                 if (mSize > 0) {
                     for (QQListItemButton mButton : mButtons) {
                         if (mButton.rectF.contains(mFirstEventX + mSize, mFirstEventY)) {
@@ -119,7 +131,7 @@ public class QQListItem extends RelativeLayout {
                 } else {
                     isClick = true;
                 }
-                break;
+                return true;
             case MotionEvent.ACTION_MOVE:
                 if (Math.abs(mFirstEventX - event.getX()) > Math.abs(event.getY() - mFirstEventY)) {
                     if (event.getX() < mFirstEventX && mSize != mWidth) {
@@ -141,15 +153,15 @@ public class QQListItem extends RelativeLayout {
                     mOtherClick = false;
                     isClick = false;
                     postInvalidate();
-                } else {
-
+                    return isMove;
                 }
-                break;
+                return false;
             case MotionEvent.ACTION_UP:
                 isMove = false;
                 for (int i = 0; i < mButtons.size(); i++) {
                     QQListItemButton button = mButtons.get(i);
                     if (button.isClick) {
+                        button.isClick = false;
                         onClick(i);
                         return true;
                     }
