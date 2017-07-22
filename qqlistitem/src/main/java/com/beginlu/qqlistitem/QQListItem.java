@@ -89,7 +89,6 @@ public class QQListItem extends RelativeLayout {
             case MotionEvent.ACTION_DOWN:
                 mFirstEventX = event.getX();
                 mFirstEventY = event.getY();
-                getParent().requestDisallowInterceptTouchEvent(true);
                 if (mSize > 0)
                     return true;
                 break;
@@ -102,18 +101,32 @@ public class QQListItem extends RelativeLayout {
                     } else {
                         isMove = false;
                     }
+                } else {
+                    isMove = false;
                 }
+                return isMove;
+            case MotionEvent.ACTION_UP:
+                break;
+        }
+        return super.onInterceptTouchEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                getParent().requestDisallowInterceptTouchEvent(true);
+                break;
+            case MotionEvent.ACTION_MOVE:
                 getParent().requestDisallowInterceptTouchEvent(isMove);
                 if (!isMove)
                     if (mSize > (mWidth) / 2)
                         moveToEnd(true);
                     else
                         moveToEnd(false);
-                return isMove;
-            case MotionEvent.ACTION_UP:
                 break;
         }
-        return super.onInterceptTouchEvent(event);
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
