@@ -29,6 +29,7 @@ public class QQListItem extends RelativeLayout {
     private boolean mOtherClick = false;
     private boolean isMove = false;
     private int mWidth = 0;
+    private boolean isClick = false;
 
     public QQListItem(Context context) {
         this(context, null);
@@ -115,6 +116,8 @@ public class QQListItem extends RelativeLayout {
                         }
                         mOtherClick = true;
                     }
+                } else {
+                    isClick = true;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -136,6 +139,7 @@ public class QQListItem extends RelativeLayout {
                         mButton.isClick = false;
                     }
                     mOtherClick = false;
+                    isClick = false;
                     postInvalidate();
                 } else {
 
@@ -150,13 +154,16 @@ public class QQListItem extends RelativeLayout {
                         return true;
                     }
                 }
-                if (mOtherClick) {
+                if (mOtherClick)
                     moveToEnd(false);
-                    mOtherClick = false;
-                } else if (mSize > mWidth / 2)
+                else if (mSize > mWidth / 2)
                     moveToEnd(true);
                 else
                     moveToEnd(false);
+                if (isClick && onClickListener != null)
+                    onClickListener.onClick();
+                mOtherClick = false;
+                isClick = false;
                 break;
         }
         return true;
@@ -164,7 +171,7 @@ public class QQListItem extends RelativeLayout {
 
     private void onClick(int position) {
         if (onClickListener != null)
-            onClickListener.OnClick(position, mButtons.get(position));
+            onClickListener.onButtonClick(position, mButtons.get(position));
         moveToEnd(false);
     }
 
@@ -192,7 +199,9 @@ public class QQListItem extends RelativeLayout {
     }
 
     public interface OnClickListener {
-        void OnClick(int position, QQListItemButton button);
+        void onButtonClick(int position, QQListItemButton button);
+
+        void onClick();
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {

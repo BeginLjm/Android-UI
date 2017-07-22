@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -29,7 +30,8 @@ public class FragmentPage1 extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_page1, container, false);
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(new MyAdapter());
         return mView;
     }
@@ -55,8 +57,13 @@ public class FragmentPage1 extends Fragment {
             holder.qqListItem.setButtons(itemButtons);
             holder.qqListItem.setOnClickListener(new QQListItem.OnClickListener() {
                 @Override
-                public void OnClick(int position, QQListItemButton button) {
+                public void onButtonClick(int position, QQListItemButton button) {
                     Toast.makeText(getActivity(), button.getText(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onClick() {
+                    Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
                 }
             });
         }
