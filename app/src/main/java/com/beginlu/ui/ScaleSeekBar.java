@@ -58,7 +58,7 @@ public class ScaleSeekBar extends AppCompatSeekBar {
     protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int progress = getProgress();
-        String progressStr = progress + "";
+        String progressStr = String.valueOf(progress);
         canvas.drawText(progressStr,
                 (getWidth() - getPaddingLeft() - getPaddingRight()) * progress / 100 + getPaddingLeft() - mTextPaint.measureText(progressStr) / 2,
                 mTextPaint.descent() - mTextPaint.ascent() + getPaddingTop(),
