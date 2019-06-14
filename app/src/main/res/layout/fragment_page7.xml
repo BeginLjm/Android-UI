@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,11 +7,60 @@
 
     <!-- TODO: Update blank fragment layout -->
     <com.beginlu.ui.ScaleSeekBar
+        android:id="@+id/whitening_seek_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:progress="40"
         android:secondaryProgress="80"
         app:textColor="#000"
-        app:textMarginBottom="2dp"
+        app:textMarginBottom="1dp"
         app:textSize="12sp" />
-</FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_progress"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:background="#8d000000"
+        android:padding="3dp"
+        android:visibility="visible">
+
+        <com.beginlu.ui.PKProgressBar
+            android:id="@+id/pk_bar"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            app:left_text_padding_left="14dp"
+            app:left_text_size="10sp"
+            app:right_text_padding_right="14dp"
+            app:right_text_size="10sp"
+            app:text_animator_size="14sp" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/left_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true" />
+
+    <Button
+        android:id="@+id/right_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:visibility="visible" />
+
+    <com.beginlu.ui.WheelPicker
+        android:id="@+id/wheel_view"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:layout_alignParentBottom="true"
+        app:wheel_data="@array/time_select"
+        app:wheel_indicator="true"
+        app:wheel_item_text_size="13sp"
+        app:wheel_selected_item_text_color="#ff2200"
+        app:wheel_selected_item_text_size="20sp" />
+</RelativeLayout>

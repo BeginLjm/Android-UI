@@ -13,7 +13,9 @@ import android.util.AttributeSet;
  */
 
 public class ScaleSeekBar extends AppCompatSeekBar {
-    private final float mTextMarginBottom;
+    private float mTextMarginBottom;
+    private int mTextColor = Color.WHITE;
+    private float mTextSize = 30;
     private final Paint mTextPaint;
 
     public ScaleSeekBar(Context context) {
@@ -28,13 +30,16 @@ public class ScaleSeekBar extends AppCompatSeekBar {
         super(context, attrs, defStyleAttr);
 
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.ScaleSeekBar);
-        int textColor = attributes.getColor(R.styleable.ScaleSeekBar_textColor, Color.WHITE);
-        float textSize = attributes.getDimension(R.styleable.ScaleSeekBar_textSize, 30);
-        mTextMarginBottom = attributes.getDimension(R.styleable.ScaleSeekBar_textMarginBottom, 10);
+        if (attributes != null) {
+            mTextColor = attributes.getColor(R.styleable.ScaleSeekBar_textColor, Color.WHITE);
+            mTextSize = attributes.getDimension(R.styleable.ScaleSeekBar_textSize, 30);
+            mTextMarginBottom = attributes.getDimension(R.styleable.ScaleSeekBar_textMarginBottom, 10);
+            attributes.recycle();
+        }
 
         mTextPaint = new Paint();
-        mTextPaint.setColor(textColor);
-        mTextPaint.setTextSize(textSize);
+        mTextPaint.setColor(mTextColor);
+        mTextPaint.setTextSize(mTextSize);
     }
 
     @Override
@@ -50,13 +55,18 @@ public class ScaleSeekBar extends AppCompatSeekBar {
     }
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-    }
-
-    @Override
     protected synchronized void onDraw(Canvas canvas) {
+        int bottom = this.getBottom();
+        int top = this.getTop();
+        this.setBottom((int) (bottom - (mTextPaint.descent() - mTextPaint.ascent() + getPaddingTop() + mTextMarginBottom)));
+        this.setTop((int) (top + (mTextPaint.descent() - mTextPaint.ascent() + getPaddingTop() + mTextMarginBottom)));
+        canvas.save();
+        canvas.translate(0, mTextPaint.descent() - mTextPaint.ascent() + getPaddingTop() + mTextMarginBottom);
         super.onDraw(canvas);
+        canvas.restore();
+        this.setBottom(bottom);
+        this.setTop(top);
+
         int progress = getProgress();
         String progressStr = String.valueOf(progress);
         canvas.drawText(progressStr,

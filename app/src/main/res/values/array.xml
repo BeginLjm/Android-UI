@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="time_select">
+        <item>10s</item>
+        <item>90s</item>
+        <item>120s</item>
+        <item>300s</item>
+        <item>600s</item>
+        <item>1200s</item>
+        <item>3000s</item>
+    </string-array>
+</resources>

@@ -1,5 +1,7 @@
 package com.beginlu.ui;
 
+import android.animation.ValueAnimator;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.beginlu.qqlistitem.QQListItem;
@@ -18,6 +21,7 @@ import java.util.LinkedList;
 public class FragmentPage1 extends Fragment {
     private View mView;
     private RecyclerView mRecyclerView;
+    private View mIv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,20 @@ public class FragmentPage1 extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(new MyAdapter());
+
+        mIv = mView.findViewById(R.id.iv);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mIv.getLayoutParams();
+        layoutParams.leftMargin = (getResources().getDisplayMetrics().widthPixels / 2) - (layoutParams.width / 2);
+        mIv.setLayoutParams(layoutParams
+        );
+
         return mView;
+    }
+
+    public static float dip2Px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return dipValue * scale + 0.5f;
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
